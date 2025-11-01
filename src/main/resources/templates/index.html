@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce - Full Stack Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <h1>
+                    <i class="fas fa-shopping-bag"></i> E-commerce
+                </h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a href="#produtos">Produtos</a></li>
+                <li><a th:href="@{/order}">Meus Pedidos</a></li>
+            </ul>
+            <div class="user-actions">
+                <a th:href="@{/cart/view}" class="cart-btn" id="cart-btn" title="Carrinho de compras">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count"
+                          th:text="${shoppingCart != null ? shoppingCart.size() : 0}">0</span>
+                </a>
+                <div class="dropdown">
+                    <button class="btn btn-outline dropdown-toggle" id="profile-dropdown">
+                        <i class="fas fa-user"></i> <span th:text="${currentUser != null ? currentUser.firstName : 'Perfil'}">Perfil</span> <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="dropdown-menu">
+                        <a th:href="@{/signin}" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i> Fazer Login
+                        </a>
+                        <a th:href="@{/signup}" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i> Criar Conta
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a th:href="@{/admin}" class="dropdown-item">
+                            <i class="fas fa-cogs"></i> Área Administrativa
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a th:href="@{/logout}" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home" th:if="${shoppingCartView == null}">
+        <div class="hero-container">
+            <h2 th:text="${title}">Sua Loja Online Completa</h2>
+            <p>Descubra produtos incríveis com os melhores preços e entrega rápida. Tecnologia e qualidade em um só lugar.</p>
+            <a href="#produtos" class="btn btn-primary">Ver Produtos</a>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Section -->
+    <section class="cart-section" th:if="${shoppingCartView != null}">
+        <div class="container">
+            <div class="admin-card">
+                <div class="card-header">
+                    <h3>
+                        <i class="fas fa-shopping-cart"></i>
+                        Carrinho de Compras
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <!-- Cart Summary Form -->
+                    <form class="form-grid three-columns">
+                        <div class="form-group">
+                            <label for="cart-user">Usuário</label>
+                            <input type="text" id="cart-user" th:value="${currentUser.firstName}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="cart-items">Total de Itens</label>
+                            <input type="text" id="cart-items" th:value="${cartTotalItems}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="cart-total">Valor Total</label>
+                            <input type="text" id="cart-total" th:value="'R$ ' + ${#numbers.formatDecimal(cartTotalValue, 1, 2)}" readonly>
+                        </div>
+                    </form>
+
+                    <!-- Cart Items Table -->
+                    <div th:if="${shoppingCartView != null and !shoppingCartView.isEmpty()}" style="margin-top: 2rem;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Preço Unitário</th>
+                                    <th>Quantidade</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${shoppingCartView}">
+                                    <td th:text="${item.product.name}">Nome do Produto</td>
+                                    <td th:text="'R$ ' + ${#numbers.formatDecimal(item.product.price, 1, 2)}">R$ 0,00</td>
+                                    <td th:text="${item.quantity}">1</td>
+                                    <td th:text="'R$ ' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}">R$ 0,00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Empty Cart Message -->
+                    <div th:if="${shoppingCartView == null or shoppingCartView.isEmpty()}" class="cart-empty">
+                        <i class="fas fa-shopping-cart" style="font-size: 64px; color: var(--text-secondary);"></i>
+                        <p>Seu carrinho está vazio</p>
+                    </div>
+                </div>
+                <div class="card-footer" style="display: flex; justify-content: center; padding-bottom: 2rem;">
+                    <div class="form-actions" style="gap: 1rem;">
+                        <a href="#produtos" class="btn btn-outline">
+                            <i class="fas fa-arrow-left"></i> Comprar Mais
+                        </a>
+                        <a th:href="@{/order/checkout}" class="btn btn-primary" th:if="${shoppingCartView != null and !shoppingCartView.isEmpty()}">
+                            <i class="fas fa-check"></i> Finalizar Pedido
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="produtos">
+        <div class="container">
+            <div class="section-header">
+                <h3>Nossos Produtos</h3>
+                <p>Explore nossa seleção cuidadosamente escolhida de produtos</p>
+            </div>
+
+            <!-- Categories Filter -->
+            <div class="categories-filter">
+                <a th:href="@{/}" class="category-btn"
+                   th:classappend="${categoriesFilter == 'ALL'} ? ' active' : ''"
+                   data-category="all">Todos</a>
+
+                <a th:href="@{/?category={category}(category=${category})}"
+                   class="category-btn"
+                   th:classappend="${categoriesFilter == category} ? ' active' : ''"
+                   th:each="category : ${categories}">
+                    <span th:text="${category.description}"></span>
+                </a>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="products-container">
+                <!-- Cards dos produtos usando Thymeleaf -->
+                <div th:each="product : ${products}" class="product-card" th:attr="data-category=${product.category.name}">
+                    <div class="product-image">
+                        <i th:class="'fas ' + ${product.category.icon}"></i>
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-title" th:text="${product.name}"></h4>
+                        <p class="product-description" th:text="${product.description}"></p>
+                        <div class="product-price" th:text="'R$ ' + ${#numbers.formatDecimal(product.price, 1, 2)}"></div>
+                        <div class="product-actions">
+                            <button class="btn btn-outline btn-small" th:onclick="'viewProduct(' + ${product.id} + ')'">
+                                <i class="fas fa-eye"></i><br>Detalhe
+                            </button>
+                            <a th:href="@{/cart/add(productId=${product.id})}" class="btn btn-primary btn-small">
+                                <i class="fas fa-cart-plus"></i><br>Adicionar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle" title="Alternar tema">
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
