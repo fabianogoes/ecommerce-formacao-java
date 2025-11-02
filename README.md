@@ -13,6 +13,7 @@ Sistema de e-commerce desenvolvido com Spring Boot 3.5.6 e Java 21.
 
 - Java 21
 - Maven 3.6+
+- Docker Desktop
 
 ## Comandos Principais
 
