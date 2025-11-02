@@ -4,7 +4,7 @@ Sistema de e-commerce desenvolvido com Spring Boot 3.5.6 e Java 21.
 
 ## Tecnologias
 
-- **Backend**: Spring Boot, Spring MVC, Spring Data JPA, Hibernate
+- **Backend**: Spring Boot, Spring MVC, Spring Data JPA, Hibernate, Docker, Postgres
 - **Frontend**: Thymeleaf, HTML5, CSS3, JavaScript
 - **Database**: H2 (in-memory)
 - **Build**: Maven
