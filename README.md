@@ -1,47 +1,112 @@
-# E-commerce Application
+# 🚀 E-commerce com Java e Spring Boot
 
-Sistema de e-commerce desenvolvido com Spring Boot 3.5.6 e Java 21.
+Projeto de um sistema de e-commerce completo, desenvolvido como parte do curso **Formação Java** do Full Stack Club.    
+A aplicação abrange desde a arquitetura MVC e APIs REST até a containerização com Docker.
 
-## Tecnologias
+--- 
 
-- **Backend**: Spring Boot, Spring MVC, Spring Data JPA, Hibernate, Docker, Postgres
-- **Frontend**: Thymeleaf, HTML5, CSS3, JavaScript
-- **Database**: H2 (in-memory)
-- **Build**: Maven
+## ✨ Funcionalidades Principais
 
-## Requisitos
+- ✅ **Catálogo de Produtos:** Visualização de produtos com filtro por categoria.
+- ✅ **Carrinho de Compras:** Gerenciamento de itens em sessão.
+- ✅ **Fluxo de Pedidos:** Checkout completo com criação de pedidos no banco de dados.
+- ✅ **Painel Administrativo:** CRUD completo para Produtos, Usuários e Pedidos.
+- ✅ **API REST:** Endpoints para gerenciamento de recursos via HTTP.
+- ✅ **Containerização:** Ambiente de produção completo com Docker e Docker Compose.
+
+--- 
+
+## 🛠️ Stack Tecnológica
+
+- **Backend:** Java 21, Spring Boot 3, Spring Data JPA, Hibernate
+- **Frontend:** Thymeleaf, HTML, CSS
+- **Banco de Dados:** PostgreSQL (produção), H2 (desenvolvimento/teste)
+- **Build/Dependency:** Maven
+- **Containerização:** Docker, Docker Compose
+- **Testes:** JUnit 5, Mockito
+
+## 🧠 Hard Skills Desenvolvidas
+
+Para construir este projeto, foram aplicadas e aprofundadas as seguintes habilidades técnicas, que são altamente demandadas no mercado de desenvolvimento backend Java:
+
+- **Linguagem Java (21+):**
+    - Uso de features modernas como **Records** para DTOs, **Streams API** para manipulação de coleções, e **Optionals** para tratamento de valores nulos.
+
+- **Ecossistema Spring:**
+    - **Spring Boot:** Configuração de projetos, gerenciamento de dependências e uso de `profiles`.
+    - **Spring MVC:** Arquitetura para aplicações web, com `Controllers` para gerenciar requisições HTTP.
+    - **Spring Data JPA:** Persistência de dados com padrão **Repository** e mapeamento objeto-relacional (ORM) com **Hibernate**.
+
+- **Template Engine:**
+    - **Thymeleaf:** Renderização de páginas web no lado do servidor, integrando o backend Java com o frontend HTML.
+
+- **APIs e Arquitetura:**
+    - **Design de APIs RESTful:** Construção de endpoints seguindo os padrões REST.
+    - **Padrão DTO (Data Transfer Object):** Separação entre o modelo de domínio e a camada de API.
+    - **Arquitetura em 3 Camadas:** Organização do código em `Controller`, `Service` e `Repository`.
+
+- **Banco de Dados:**
+    - **PostgreSQL:** Utilização como banco de dados de produção.
+    - **H2 Database:** Uso para testes automatizados e ambiente de desenvolvimento inicial.
+
+- **Testes Automatizados:**
+    - **JUnit 5 e Mockito:** Criação de testes unitários e de integração para garantir a qualidade e a confiabilidade do código.
+
+- **Ferramentas de Build e Versionamento:**
+    - **Maven:** Gerenciamento de dependências e do ciclo de vida do build do projeto.
+    - **Git e GitHub:** Controle de versão e hospedagem do código-fonte.
+
+- **Containerização (DevOps):**
+    - **Docker e Docker Compose:** Criação de um ambiente de desenvolvimento e produção containerizado, garantindo consistência e facilitando o deploy.
+
+## 🚀 Como Executar o Projeto
+
+### Pré-requisitos
 
 - Java 21
 - Maven 3.6+
-- Docker Desktop
+- Docker e Docker Compose
+
+### Passos
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone git@github.com:seu-username/ecommerce-java-springboot.git
+    cd ecommerce-java-springboot
+    ```
+
+2.  **Execute o ambiente Docker:**
+    *Isso irá iniciar o banco de dados PostgreSQL e a interface Adminer.*
+    ```bash
+    docker-compose up -d
+    ```
+
+3.  **Execute a aplicação Spring Boot:**
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+
+4.  **Acesse a aplicação:**
+    - **Loja:** [http://localhost:8080](http://localhost:8080)
+    - **Adminer (DB):** [http://localhost:8081](http://localhost:8081)
+
+--- 
+
+## 🔌 Endpoints da API
+
+A API está disponível no prefixo `/api`.
+
+- `GET /api/products`: Lista todos os produtos.
+- `PUT /api/products/{id}/price`: Atualiza o preço de um produto.
+- `POST /api/orders`: Cria um novo pedido.
+- ... e outros.
 
 ## Comandos Principais
 
-### Executar a aplicação
-
 ```bash
 ./mvnw spring-boot:run
-```
-
-A aplicação estará disponível em: http://localhost:8080
-
-### Executar com auto-login de administrador
-
-```bash
 ./mvnw spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=admin
-```
-
-Acesse diretamente: http://localhost:8080/admin (já logado como admin)
-
-### Build do projeto
-
-```bash
-./mvnw clean install
-```
-
-### Executar testes
-
-```bash
+./mvnw clean clean package
 ./mvnw test
 ```
 
@@ -90,21 +155,6 @@ server.port=8081
 ./mvnw spring-boot:run -Dspring-boot.run.arguments=--server.port=8081
 ```
 
-## Funcionalidades Implementadas
-
-- ✅ Catálogo de produtos com filtro por categoria
-- ✅ Carrinho de compras (gerenciamento em sessão)
-- ✅ Checkout e finalização de pedidos
-- ✅ Cadastro e autenticação de usuários (session-based)
-- ✅ Área administrativa com CRUD completo:
-  - Gerenciamento de produtos
-  - Gerenciamento de usuários
-  - Gerenciamento de pedidos
-- ✅ Controle de permissões (admin vs usuário comum)
-- ✅ Filtros dinâmicos usando enums
-- ✅ Integração Thymeleaf com Spring MVC
-- ✅ Seed de dados inicial para desenvolvimento
-
 ## Estrutura do Projeto
 
 ```
@@ -132,6 +182,3 @@ Para usar auto-login de admin no IntelliJ IDEA Community:
 3. No campo "Program arguments", adicione: `--spring.profiles.active=admin`
 4. Clique em Apply e execute normalmente
 
-## Mais Informações
-
-Consulte o arquivo [CLAUDE.md](CLAUDE.md) para detalhes da arquitetura e padrões utilizados.
